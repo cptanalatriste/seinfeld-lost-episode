@@ -69,7 +69,7 @@ class RNN(nn.Module):
 
 def forward_and_backpropagation(network, optimiser, criterion, input_batch, target_batch, hidden_state):
     if torch.cuda.is_available():
-        input_batch, target_batch = network.cuda(), input_batch.cuda(), target_batch.cuda()
+        input_batch, target_batch = input_batch.cuda(), target_batch.cuda()
 
     hidden_state = tuple([each.data for each in hidden_state])
 
