@@ -7,7 +7,7 @@ from lost_episode.data_utils import create_int_to_word_map, create_word_to_int_m
 from problem_unittests import test_create_lookup_tables, test_tokenize
 
 
-class TestLostEpisode(unittest.TestCase):
+class TestDataUtils(unittest.TestCase):
 
     def test_lookup_tables(self):
         test_create_lookup_tables(create_lookup_tables=create_maps)

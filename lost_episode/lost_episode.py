@@ -65,3 +65,19 @@ class RNN(nn.Module):
                       weight.new(self.lstm_num_layers, batch_size, self.lstm_hidden_size).zero_())
 
         return hidden
+
+
+def forward_and_backpropagation(network, optimiser, criterion, input_batch, target_batch, hidden_state):
+
+    if torch.cuda.is_available():
+        network, input_batch, target_batch = network.cuda(), input_batch.cuda(), target_batch.cuda()
+
+    optimiser.zero_grad()
+
+    forward_output, new_hidden_state = network.forward(input_batch, hidden_state)
+    loss_batch = criterion(forward_output, target_batch)
+
+    loss_batch.backward()
+    optimiser.step()
+
+    return loss_batch.item(), new_hidden_state
