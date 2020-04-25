@@ -20,24 +20,15 @@ class TestLostEpisode(unittest.TestCase):
                                                  forward_back_prop=lost_episode.forward_and_backpropagation,
                                                  train_on_gpu=self.train_on_gpu)
 
-    @unittest.skip
     def test_transfer_model_parameters(self):
-        model_file = 'test_rnn.pt'
-        device = 'cuda' if torch.cuda.is_available() else 'cpu'
-        original_model = torch.load(model_file, map_location=torch.device(device))
-
-        print("original_model", original_model)
-
         vocab_size = 21388
         output_size = vocab_size
         embedding_dim = 100
         hidden_dim = 64
         n_layers = 2
-        test_rnn = RNN(vocab_size, output_size, embedding_dim, hidden_dim, n_layers)
-        print("test_rnn", test_rnn)
+        test_rnn = RNN(vocab_size, output_size, embedding_dim, hidden_dim, n_layers, 'non_existent.pt')
 
-        self.assertTrue(
-            compare_model_parameters(original_model.state_dict(), test_rnn.state_dict()))
+        self.assertTrue(test_rnn is not None)
 
 
 def compare_model_parameters(parameters, more_parameters):

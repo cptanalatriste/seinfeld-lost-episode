@@ -23,7 +23,7 @@ def create_punctuation_map():
             '\n': "||return||"}
 
 
-def create_batch_dataloader(words_as_ints, sequence_lenght, batch_size):
+def create_batch_dataloader(words_as_ints, sequence_lenght, batch_size, shuffle=True):
     sequence_start = 0
     feature_tensor = []
     target_tensor = []
@@ -37,4 +37,4 @@ def create_batch_dataloader(words_as_ints, sequence_lenght, batch_size):
         sequence_start += 1
 
     dataset = TensorDataset(torch.LongTensor(feature_tensor), torch.LongTensor(target_tensor))
-    return DataLoader(dataset=dataset, batch_size=batch_size, shuffle=True)
+    return DataLoader(dataset=dataset, batch_size=batch_size, shuffle=shuffle)

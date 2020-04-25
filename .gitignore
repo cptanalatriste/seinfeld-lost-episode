@@ -1,2 +1,3 @@
 /.ipynb_checkpoints/
 /aws-deep-learning-key.pem
+/trained_rnn.pt

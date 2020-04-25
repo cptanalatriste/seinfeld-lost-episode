@@ -27,17 +27,22 @@ class TestDataUtils(unittest.TestCase):
         batch_size = 1
         test_dataloader = create_batch_dataloader(words_as_ints=test_dictionary,
                                                   sequence_lenght=test_lenght,
-                                                  batch_size=batch_size)
+                                                  batch_size=batch_size, shuffle=False)
         data_iterator = iter(test_dataloader)
         first_batch_features, first_batch_target = next(data_iterator)
         self.assertEqual(first_batch_features.shape, (batch_size, test_lenght))
         self.assertEqual(first_batch_target.shape, (1,))
 
-        self.assertTrue(torch.all(first_batch_features.eq(torch.LongTensor([[1, 2, 3, 4]]))))
+        expected_first_batch = torch.LongTensor([[1, 2, 3, 4]])
+        print("expected_first_batch", expected_first_batch)
+        print("first_batch_features", first_batch_features)
+
+        self.assertTrue(torch.all(first_batch_features.eq(expected_first_batch)))
         self.assertEqual(5, first_batch_target.item())
 
         second_batch_features, second_batch_target = next(data_iterator)
-        self.assertTrue(torch.all(second_batch_features.eq(torch.LongTensor([[2, 3, 4, 5]]))))
+        expected_second_batch = torch.LongTensor([[2, 3, 4, 5]])
+        self.assertTrue(torch.all(second_batch_features.eq(expected_second_batch)))
         self.assertEqual(6, second_batch_target.item())
 
 
