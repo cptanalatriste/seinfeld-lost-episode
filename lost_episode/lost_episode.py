@@ -1,10 +1,13 @@
+import os
+
 import torch
 from torch import nn
 
 
 class RNN(nn.Module):
 
-    def __init__(self, vocab_size, output_size, embedding_dim, hidden_dim, n_layers, dropout=0.5):
+    def __init__(self, vocab_size, output_size, embedding_dim, hidden_dim, n_layers,
+                 model_file='trained_rnn.pt', dropout=0.5):
         """
         Initialize the PyTorch RNN Module
         :param vocab_size: The number of input dimensions of the neural network (the size of the vocabulary)
@@ -28,6 +31,19 @@ class RNN(nn.Module):
                             num_layers=self.lstm_num_layers, batch_first=True,
                             dropout=dropout)
         self.linear = nn.Linear(in_features=self.linear_in_features, out_features=self.linear_out_features)
+
+        self.transfer_model_parameters(model_file)
+
+    def transfer_model_parameters(self, model_file):
+        try:
+            device = 'cuda' if torch.cuda.is_available() else 'cpu'
+            reference_model = torch.load(model_file, map_location=torch.device(device))
+            state_dict = reference_model['state_dict']
+            self.load_state_dict(state_dict)
+
+            print("Loading model parameters from ", model_file)
+        except:
+            print("Could not load parameters from ", model_file)
 
     def forward(self, nn_input, hidden):
         """
